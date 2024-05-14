@@ -1,1 +1,0 @@
-# newsvcc-bot
