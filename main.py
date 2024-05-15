@@ -36,9 +36,13 @@ async def divide(interaction: discord.Interaction, num1: int, num2: int) -> None
     else:
         await interaction.response.send_message(f"{num1} / {num2} = {num1 / num2}")
 
-@bot.tree.command(name="ip", description="Give me the ip of the minecraft server.")
-async def multiply(interaction: discord.Interaction, num1: int, num2: int) -> None:
-    await interaction.response.send_message(f"{num1} * {num2} = {num1 * num2}")
+@bot.tree.command(name="ip", description="IP of the Minecraft server.")
+async def multiply(interaction: discord.Interaction) -> None:
+    await interaction.response.send_message(f"Go to <#1137766486803480686>")
+    
+@bot.tree.command(name="invite", description="Invite link of this Discord server.")
+async def multiply(interaction: discord.Interaction) -> None:
+    await interaction.response.send_message(f"http://dsc.gg/newsvcc")
 
 async def on_ready():
     print("")
