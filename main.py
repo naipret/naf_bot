@@ -1,13 +1,36 @@
 import discord
 from discord import app_commands
-from discord.ext import commands
 import json
 
 with open("config.json", 'r') as file:
     config = json.load(file)
     token = config["token"]
-    
-bot = discord.ext.commands.Bot(command_prefix="!", intents=discord.Intents.all())
+
+class Bot(discord.Client):
+    def __init__(self, *, intents: discord.Intents):
+        super().__init__(intents=intents)
+        self.tree = app_commands.CommandTree(self)
+    async def setup_hook(self):
+        await self.tree.sync()
+
+intents = discord.Intents.default()
+intents.message_content = True
+
+bot = Bot(intents=intents)
+
+@bot.event
+async def on_ready():
+    print("")
+    try:
+        synced = await bot.tree.sync()
+        print(f"Synced {len(synced)} commands...")
+    except Exception as e:
+        print(f"Error syncing commands: {e}")
+    print("")
+    print(f"Your bot {bot.user} is now RUNNING!")
+    print(f"Invite link: https://discord.com/api/oauth2/authorize?client_id={bot.user.id}&permissions=8&scope=bot%20applications.commands")
+    await bot.change_presence(activity=discord.Game(name="Minecraft"))
+    print("")
 
 @bot.tree.command(name="ping", description="Check the bot's latency.")
 async def ping(interaction: discord.Interaction) -> None:
@@ -37,25 +60,11 @@ async def divide(interaction: discord.Interaction, num1: int, num2: int) -> None
         await interaction.response.send_message(f"{num1} / {num2} = {num1 / num2}")
 
 @bot.tree.command(name="ip", description="IP of the Minecraft server.")
-async def multiply(interaction: discord.Interaction) -> None:
-    await interaction.response.send_message(f"Go to <#1137766486803480686>")
-    
-@bot.tree.command(name="invite", description="Invite link of this Discord server.")
-async def multiply(interaction: discord.Interaction) -> None:
-    await interaction.response.send_message(f"http://dsc.gg/newsvcc")
+async def ip(interaction: discord.Interaction) -> None:
+    await interaction.response.send_message(f"-> <#1137766486803480686>")
 
-async def on_ready():
-    print("")
-    try:
-        synced = await bot.tree.sync()
-        print(f"Synced {len(synced)} commands...")
-    except Exception as e:
-        print(e)
-    print("")
-    print(f"Your bot {bot.user} is now RUNNING!")
-    print(f"Invite link: https://discord.com/api/oauth2/authorize?client_id={bot.user.id}&permissions=8&scope=bot%20applications.commands")
-    await bot.change_presence(activity=discord.Game(name="Minecraft"))
-    print("")
+@bot.tree.command(name="invite", description="Invite link of this Discord server.")
+async def invite(interaction: discord.Interaction) -> None:
+    await interaction.response.send_message(f"-> http://dsc.gg/newsvcc")
     
-bot.add_listener(on_ready)
 bot.run(token)
