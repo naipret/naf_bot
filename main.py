@@ -20,18 +20,26 @@ bot = Bot(intents=intents)
 
 @bot.event
 async def on_ready():
-    print("")
-    try:
-        synced = await bot.tree.sync()
-        print(f"Synced {len(synced)} commands...")
-    except Exception as e:
-        print(f"Error syncing commands: {e}")
+    # print("")
+    # try:
+    #     print(f"Synced {len(synced)} commands...")
+    #     synced = await bot.tree.sync()
+    # except Exception as e:
+    #     print(f"Error syncing commands: {e}")
     print("")
     print(f"Your bot {bot.user} is now RUNNING!")
     print(f"Invite link: https://discord.com/api/oauth2/authorize?client_id={bot.user.id}&permissions=8&scope=bot%20applications.commands")
     await bot.change_presence(activity=discord.Game(name="Minecraft"))
     print("")
 
+@bot.tree.command(name="ip", description="IP of the Minecraft server.")
+async def ip(interaction: discord.Interaction) -> None:
+    await interaction.response.send_message(f"-> <#1137766486803480686>")
+
+@bot.tree.command(name="invite", description="Invite link of this Discord server.")
+async def invite(interaction: discord.Interaction) -> None:
+    await interaction.response.send_message(f"-> http://dsc.gg/newsvcc")
+    
 @bot.tree.command(name="ping", description="Check the bot's latency.")
 async def ping(interaction: discord.Interaction) -> None:
     await interaction.response.send_message(f"Pong! {round(bot.latency * 1000)}ms")
@@ -59,12 +67,15 @@ async def divide(interaction: discord.Interaction, num1: int, num2: int) -> None
     else:
         await interaction.response.send_message(f"{num1} / {num2} = {num1 / num2}")
 
-@bot.tree.command(name="ip", description="IP of the Minecraft server.")
-async def ip(interaction: discord.Interaction) -> None:
-    await interaction.response.send_message(f"-> <#1137766486803480686>")
+@bot.tree.command(name="version", description="Version of the bot.")
+async def version(interaction: discord.Interaction) -> None:
+    await interaction.response.send_message(f"Version 3.5 (16/05/2024)")
 
-@bot.tree.command(name="invite", description="Invite link of this Discord server.")
-async def invite(interaction: discord.Interaction) -> None:
-    await interaction.response.send_message(f"-> http://dsc.gg/newsvcc")
-    
+@bot.tree.command(name="help", description="Shows this help message.")
+async def help(interaction: discord.Interaction) -> None:
+    embed = discord.Embed(title="Help", description="List of available commands:", color=0x00ff00)
+    for command in bot.tree.get_commands():
+        embed.add_field(name=f"/{command.name}", value=command.description, inline=False)
+    await interaction.response.send_message(embed=embed)
+
 bot.run(token)
