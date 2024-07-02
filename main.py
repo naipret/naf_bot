@@ -75,20 +75,23 @@ async def help(interaction: discord.Interaction) -> None:
 @bot.tree.command(name="guide", description="Send a guide message to a new user.")
 async def guide(interaction: discord.Interaction, user: discord.User) -> None:
     guide_message = (
-        "_Discord:_ http://dsc.gg/newsvcc\n"
-        "_Author:_ <@812886139593687080>\n\n"
-        "Chào, đây là tin nhắn tự động:D\n\n"
-        "Có cái kênh này mình nghĩ bạn nên đọc qua -> https://ptb.discord.com/channels/998500551488708618/1129023879105499177\n"
-        "Hầu hết những thông tin hữu ích đều có trong này\n\n"
-        "Ip ở đây -> https://ptb.discord.com/channels/998500551488708618/1137766486803480686\n"
-        "Kênh này là các update liên quan đến server -> https://ptb.discord.com/channels/998500551488708618/1115931700900409384\n"
-        "Và kênh này để tạo vote góp ý các thứ -> https://ptb.discord.com/channels/998500551488708618/1114563225300770928\n"
-        "Còn nhiều kênh khác hữu ích nữa bạn khám phá nhé:D\n\n"
-        "Server tùy lúc sẽ đông, bạn thông cảm nha:\")\n\n"
-        "Nếu có thắc mắc, bạn có thể DM trực tiếp với <@812886139593687080>\n"
-        "Hoặc tại kênh này -> https://ptb.discord.com/channels/998500551488708618/1241614553863946369\n\n"
-        "Chúc bạn có trải nghiệm vui vẻ:D\n"
-        "Cảm ơn\n"
+        "_Discord: http://dsc.gg/nafdiscord _\n"
+        "_Author: <@812886139593687080> _\n\n"
+        "# 🎉 CHÀO MỪNG BẠN ĐẾN VỚI NAIPRET AND FRIENDS 🎉\n"
+        "Chúng tôi rất vui khi được chào đón bạn đến với cộng đồng **naf**.\n"
+        "Dưới đây là một số thông tin hữu ích giúp bạn bắt đầu.\n\n"
+        "## 📚 Các thông tin chung 📚\n"
+        "- Nội quy -> https://discord.com/channels/998500551488708618/1130707359937871872\n"
+        "- Thông báo -> https://discord.com/channels/998500551488708618/1134709980566667334\n"
+        "- Cập nhật -> https://discord.com/channels/998500551488708618/1115931700900409384\n"
+        "- Góp ý và bình chọn -> https://discord.com/channels/998500551488708618/1114563225300770928\n\n"
+        "## 🎮 Chơi tại naf như thế nào 🎮\n"
+        "- Ip -> https://discord.com/channels/998500551488708618/1137766486803480686\n"
+        "- Hướng dẫn -> https://discord.com/channels/998500551488708618/1129023879105499177\n\n"
+        "Bạn có thể DM cho -> <@812886139593687080> nếu cần hỗ trợ trực tiếp.\n"
+        "Hoặc tại kênh hỗ trợ -> https://discord.com/channels/998500551488708618/1241614553863946369\n\n"
+        "_Chúng tôi hy vọng bạn sẽ có những trải nghiệm tuyệt vời và kỷ niệm đáng nhớ tại đây._\n"
+        "_**Chân thành cảm ơn!**_"
     )
     try:
         await user.send(guide_message)
