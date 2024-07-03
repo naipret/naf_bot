@@ -32,7 +32,7 @@ async def ip(interaction: discord.Interaction) -> None:
 
 @bot.tree.command(name="invite", description="Invite link of this Discord server.")
 async def invite(interaction: discord.Interaction) -> None:
-    await interaction.response.send_message(f"-> http://dsc.gg/newsvcc")
+    await interaction.response.send_message(f"-> http://dsc.gg/nafdiscord")
     
 @bot.tree.command(name="ping", description="Check the bot's latency.")
 async def ping(interaction: discord.Interaction) -> None:
