@@ -23,7 +23,7 @@ async def on_ready():
     print("")
     print(f"Your bot {bot.user} is now RUNNING!")
     print(f"Invite link: https://discord.com/api/oauth2/authorize?client_id={bot.user.id}&permissions=8&scope=bot%20applications.commands")
-    await bot.change_presence(activity=discord.Game(name="dsc.gg/newsvcc"))
+    await bot.change_presence(activity=discord.Game(name="dsc.gg/nafdiscord"))
     print("")
 
 @bot.tree.command(name="ip", description="IP of the Minecraft server.")
