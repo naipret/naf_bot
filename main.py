@@ -62,6 +62,7 @@ async def echo(interaction: discord.Interaction, message: str) -> None:
 #         await interaction.response.send_message(f"{num1} / {num2} = {num1 / num2}")
 
 @naf.tree.command(name="guide", description="Send a guide message to a new user.")
+@app_commands.checks.has_permissions(administrator=True)
 async def guide(interaction: discord.Interaction, user: discord.User = None):
     guide_message = (
         "_Discord: http://dsc.gg/nafdiscord _\n"
@@ -94,6 +95,22 @@ async def guide(interaction: discord.Interaction, user: discord.User = None):
             await interaction.response.send_message(f"Could not send a message to {user.mention}. They might have DMs disabled.", ephemeral=True)
         else:
             await interaction.response.send_message("Could not send a message to you. You might have DMs disabled.", ephemeral=True)
+
+@naf.tree.command(name="msg", description="Send a private message to a user.")
+@app_commands.checks.has_permissions(administrator=True)
+async def msg(interaction: discord.Interaction, user: discord.User, message: str):
+    try:
+        await user.send(message)
+        await interaction.response.send_message(f"Message sent to {user.mention}.", ephemeral=True)
+    except discord.Forbidden:
+        await interaction.response.send_message(f"Could not send a message to {user.mention}. They might have DMs disabled.", ephemeral=True)
+
+async def handle_command_error(interaction: discord.Interaction, error: app_commands.AppCommandError):
+    if isinstance(error, app_commands.MissingPermissions):
+        await interaction.response.send_message("You do not have permission to use this command.", ephemeral=True)
+
+guide.error(handle_command_error)
+msg.error(handle_command_error)
 
 @naf.tree.command(name="help", description="Shows this help message.")
 async def help(interaction: discord.Interaction):
