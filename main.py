@@ -2,7 +2,7 @@ import discord
 from discord import app_commands
 import json
 
-with open("config.json", 'r') as file:
+with open("config.json", "r") as file:
     config = json.load(file)
     token = config["token"]
 
@@ -22,7 +22,9 @@ naf = Bot(intents=intents)
 async def on_ready():
     print("")
     print(f"Your bot {naf.user} is now RUNNING!")
-    print(f"Invite link: https://discord.com/api/oauth2/authorize?client_id={naf.user.id}&permissions=8&scope=bot%20applications.commands")
+    print(
+        f"Invite link: https://discord.com/api/oauth2/authorize?client_id={naf.user.id}&permissions=8&scope=bot%20applications.commands"
+    )
     await naf.change_presence(activity=discord.Game(name="dsc.gg/nafdiscord"))
     print("")
 
@@ -33,7 +35,7 @@ async def ip(interaction: discord.Interaction):
 @naf.tree.command(name="invite", description="Invite link of this Discord server.")
 async def invite(interaction: discord.Interaction):
     await interaction.response.send_message(f"-> http://dsc.gg/nafdiscord")
-    
+
 # @bot.tree.command(name="ping", description="Check the bot's latency.")
 # async def ping(interaction: discord.Interaction) -> None:
 #     await interaction.response.send_message(f"Pong! {round(bot.latency * 1000)}ms")
@@ -66,9 +68,14 @@ async def echo(interaction: discord.Interaction, message: str) -> None:
 async def msg(interaction: discord.Interaction, user: discord.User, message: str):
     try:
         await user.send(message)
-        await interaction.response.send_message(f"Message sent to {user.mention}.", ephemeral=True)
+        await interaction.response.send_message(
+            f"Message sent to {user.mention}.", ephemeral=True
+        )
     except discord.Forbidden:
-        await interaction.response.send_message(f"Could not send a message to {user.mention}. They might have DMs disabled.", ephemeral=True)
+        await interaction.response.send_message(
+            f"Could not send a message to {user.mention}. They might have DMs disabled.",
+            ephemeral=True,
+        )
 
 @naf.tree.command(name="guide", description="Send a guide message to a user.")
 @app_commands.checks.has_permissions(administrator=True)
@@ -95,28 +102,47 @@ async def guide(interaction: discord.Interaction, user: discord.User = None):
     try:
         if user:
             await user.send(guide_message)
-            await interaction.response.send_message(f"Guide message sent to {user.mention}.", ephemeral=True)
+            await interaction.response.send_message(
+                f"Guide message sent to {user.mention}.", ephemeral=True
+            )
         else:
             await interaction.user.send(guide_message)
-            await interaction.response.send_message("Guide message sent to you.", ephemeral=True)
+            await interaction.response.send_message(
+                "Guide message sent to you.", ephemeral=True
+            )
     except discord.Forbidden:
         if user:
-            await interaction.response.send_message(f"Could not send a message to {user.mention}. They might have DMs disabled.", ephemeral=True)
+            await interaction.response.send_message(
+                f"Could not send a message to {user.mention}. They might have DMs disabled.",
+                ephemeral=True,
+            )
         else:
-            await interaction.response.send_message("Could not send a message to you. You might have DMs disabled.", ephemeral=True)
+            await interaction.response.send_message(
+                "Could not send a message to you. You might have DMs disabled.",
+                ephemeral=True,
+            )
 
-async def handle_command_error(interaction: discord.Interaction, error: app_commands.AppCommandError):
+async def handle_command_error(
+    interaction: discord.Interaction, error: app_commands.AppCommandError
+):
     if isinstance(error, app_commands.MissingPermissions):
-        await interaction.response.send_message("You do not have permission to use this command.", ephemeral=True)
+        await interaction.response.send_message(
+            "You do not have permission to use this command.", ephemeral=True
+        )
 
 msg.error(handle_command_error)
 guide.error(handle_command_error)
 
 @naf.tree.command(name="help", description="Shows this help message.")
 async def help(interaction: discord.Interaction):
-    embed = discord.Embed(title="List of all available commands", description="Github repo: https://github.com/naipret/naf_bot")
+    embed = discord.Embed(
+        title="List of all available commands",
+        description="Github repo: https://github.com/naipret/naf_bot",
+    )
     for command in naf.tree.get_commands():
-        embed.add_field(name=f"/{command.name}", value=command.description, inline=False)
+        embed.add_field(
+            name=f"/{command.name}", value=command.description, inline=False
+        )
     await interaction.response.send_message(embed=embed)
 
-naf.run(token, reconnect = True)
+naf.run(token, reconnect=True)
