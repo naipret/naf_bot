@@ -16,29 +16,29 @@ class Bot(discord.Client):
 intents = discord.Intents.default()
 intents.message_content = True
 
-Bot = Bot(intents=intents)
+naf = Bot(intents=intents)
 
-@Bot.event
+@naf.event
 async def on_ready():
     print("")
-    print(f"Your bot {Bot.user} is now RUNNING!")
-    print(f"Invite link: https://discord.com/api/oauth2/authorize?client_id={Bot.user.id}&permissions=8&scope=bot%20applications.commands")
-    await Bot.change_presence(activity=discord.Game(name="dsc.gg/nafdiscord"))
+    print(f"Your bot {naf.user} is now RUNNING!")
+    print(f"Invite link: https://discord.com/api/oauth2/authorize?client_id={naf.user.id}&permissions=8&scope=bot%20applications.commands")
+    await naf.change_presence(activity=discord.Game(name="dsc.gg/nafdiscord"))
     print("")
 
-@Bot.tree.command(name="ip", description="IP of the Minecraft server.")
-async def ip(interaction: discord.Interaction) -> None:
+@naf.tree.command(name="ip", description="IP of the Minecraft server.")
+async def ip(interaction: discord.Interaction):
     await interaction.response.send_message(f"-> <#1137766486803480686>")
 
-@Bot.tree.command(name="invite", description="Invite link of this Discord server.")
-async def invite(interaction: discord.Interaction) -> None:
+@naf.tree.command(name="invite", description="Invite link of this Discord server.")
+async def invite(interaction: discord.Interaction):
     await interaction.response.send_message(f"-> http://dsc.gg/nafdiscord")
     
 # @bot.tree.command(name="ping", description="Check the bot's latency.")
 # async def ping(interaction: discord.Interaction) -> None:
 #     await interaction.response.send_message(f"Pong! {round(bot.latency * 1000)}ms")
 
-@Bot.tree.command(name="echo", description="Echoes the user's message.")
+@naf.tree.command(name="echo", description="Echoes the user's message.")
 async def echo(interaction: discord.Interaction, message: str) -> None:
     await interaction.response.send_message(message)
 
@@ -61,7 +61,7 @@ async def echo(interaction: discord.Interaction, message: str) -> None:
 #     else:
 #         await interaction.response.send_message(f"{num1} / {num2} = {num1 / num2}")
 
-@Bot.tree.command(name="guide", description="Send a guide message to a new user.")
+@naf.tree.command(name="guide", description="Send a guide message to a new user.")
 async def guide(interaction: discord.Interaction, user: discord.User = None):
     guide_message = (
         "_Discord: http://dsc.gg/nafdiscord _\n"
@@ -85,21 +85,21 @@ async def guide(interaction: discord.Interaction, user: discord.User = None):
     try:
         if user:
             await user.send(guide_message)
-            await interaction.response.send_message(f"Guide message sent to {user.mention}.", ephemeral = True)
+            await interaction.response.send_message(f"Guide message sent to {user.mention}.", ephemeral=True)
         else:
             await interaction.user.send(guide_message)
-            await interaction.response.send_message("Guide message sent to you.", ephemeral = True)
+            await interaction.response.send_message("Guide message sent to you.", ephemeral=True)
     except discord.Forbidden:
         if user:
-            await interaction.response.send_message(f"Could not send a message to {user.mention}. They might have DMs disabled.", ephemeral = True)
+            await interaction.response.send_message(f"Could not send a message to {user.mention}. They might have DMs disabled.", ephemeral=True)
         else:
-            await interaction.response.send_message("Could not send a message to you. You might have DMs disabled.", ephemeral = True)
+            await interaction.response.send_message("Could not send a message to you. You might have DMs disabled.", ephemeral=True)
 
-@Bot.tree.command(name="help", description="Shows this help message.")
-async def help(interaction: discord.Interaction) -> None:
+@naf.tree.command(name="help", description="Shows this help message.")
+async def help(interaction: discord.Interaction):
     embed = discord.Embed(title="Help", description="List of available commands:")
-    for command in Bot.tree.get_commands():
+    for command in naf.tree.get_commands():
         embed.add_field(name=f"/{command.name}", value=command.description, inline=False)
     await interaction.response.send_message(embed=embed)
 
-Bot.run(token, reconnect = True)
+naf.run(token, reconnect = True)
