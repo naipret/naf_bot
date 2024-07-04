@@ -1,3 +1,4 @@
 {
-    "token": "bot_token"
+    "token": "bot_token",
+    "apikey": "api_key"
 }
