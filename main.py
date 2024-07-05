@@ -6,7 +6,10 @@ from src import server
 from src import administrator
 from src import math
 
-with open("config.json", "r") as file:
+with open(
+    "config/config.json",
+    "r",
+) as file:
     config = json.load(file)
     token = config["token"]
 
@@ -23,36 +26,44 @@ class Bot(discord.Client):
 intents = discord.Intents.default()
 intents.message_content = True
 
-naf = Bot(intents=intents)
+bot = Bot(intents=intents)
 
 
-@naf.event
+@bot.event
 async def on_ready():
     print("")
-    print(f"Your bot {naf.user} is now RUNNING!")
+    print(f"Your bot {bot.user} is now RUNNING!")
     print(
-        f"Invite link: https://discord.com/api/oauth2/authorize?client_id={naf.user.id}&permissions=8&scope=bot%20applications.commands"
+        f"Invite link: https://discord.com/api/oauth2/authorize?client_id={bot.user.id}&permissions=8&scope=bot%20applications.commands"
     )
     print("")
-    await naf.change_presence(activity=discord.Game(name="dsc.gg/nafdiscord"))
+    await bot.change_presence(activity=discord.Game(name="dsc.gg/nafdiscord"))
 
 
-server.setup(naf)
-administrator.setup(naf)
-# math.setup(naf)
+server.setup(bot)
+administrator.setup(bot)
+math.setup(bot)
 
 
-@naf.tree.command(name="help", description="Shows this help message.")
+@bot.tree.command(
+    name="help",
+    description="Shows this help message.",
+)
 async def help(interaction: discord.Interaction):
     embed = discord.Embed(
         title="List of all available commands",
         description="Github repo: https://github.com/naipret/naf_bot",
     )
-    for command in naf.tree.get_commands():
+    for command in bot.tree.get_commands():
         embed.add_field(
-            name=f"/{command.name}", value=command.description, inline=False
+            name=f"/{command.name}",
+            value=command.description,
+            inline=False,
         )
     await interaction.response.send_message(embed=embed)
 
 
-naf.run(token, reconnect=True)
+bot.run(
+    token,
+    reconnect=True,
+)
