@@ -4,7 +4,7 @@ import json
 
 from src import server
 from src import administrator
-from src import math
+#from src import math
 
 with open(
     "config/config.json",
@@ -42,7 +42,7 @@ async def on_ready():
 
 server.setup(bot)
 administrator.setup(bot)
-math.setup(bot)
+#math.setup(bot)
 
 
 @bot.tree.command(
