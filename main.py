@@ -4,14 +4,14 @@ import json
 
 from src import server
 from src import administrator
-#from src import math
+# from src import math
 
 with open(
     "config/config.json",
     "r",
 ) as file:
     config = json.load(file)
-    token = config["token"]
+    bot_token = config["bot_token"]
 
 
 class Bot(discord.Client):
@@ -42,7 +42,7 @@ async def on_ready():
 
 server.setup(bot)
 administrator.setup(bot)
-#math.setup(bot)
+# math.setup(bot)
 
 
 @bot.tree.command(
@@ -64,6 +64,6 @@ async def help(interaction: discord.Interaction):
 
 
 bot.run(
-    token,
+    bot_token,
     reconnect=True,
 )
