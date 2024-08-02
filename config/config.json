@@ -1,6 +1,6 @@
 {
     "bot_token": "bot_token",
 
-    "welcome_channel_id": "channel_id",
-    "goodbye_channel_id": "channel_id"
+    "welcome_channel_id": 999632195247419502,
+    "goodbye_channel_id": 1268813798718967911
 }
