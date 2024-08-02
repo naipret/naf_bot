@@ -4,6 +4,7 @@ import json
 
 from src import server
 from src import administrator
+
 # from src import math
 
 with open(
@@ -12,6 +13,8 @@ with open(
 ) as file:
     config = json.load(file)
     bot_token = config["bot_token"]
+    welcome_channel_id = config["welcome_channel_id"]
+    goodbye_channel_id = config["goodbye_channel_id"]
 
 
 class Bot(discord.Client):
@@ -38,6 +41,20 @@ async def on_ready():
     )
     print("")
     await bot.change_presence(activity=discord.Game(name="dsc.gg/nafdiscord"))
+
+
+@bot.event
+async def on_member_join(member: discord.Member):
+    channel = bot.get_channel(welcome_channel_id)
+    if channel is not None:
+        await channel.send(f"Welcome {member.mention} to the server!")
+
+
+@bot.event
+async def on_member_remove(member: discord.Member):
+    channel = bot.get_channel(goodbye_channel_id)
+    if channel is not None:
+        await channel.send(f"{member.mention} has left the server.")
 
 
 server.setup(bot)
