@@ -2,7 +2,7 @@ import discord
 from discord import app_commands
 
 
-def setup(bot):
+def setup(bot, discord_invite_link):
     @bot.tree.command(
         name="ip",
         description="IP of the SMP or MINIGAME server.",
@@ -28,7 +28,7 @@ def setup(bot):
             )
         else:
             await interaction.response.send_message(
-                f'Invalid server type. Please choose either "smp" or "minigame".',
+                f"Invalid selection type.",
                 ephemeral=True,
             )
 
@@ -47,8 +47,8 @@ def setup(bot):
         await ip.callback(interaction, "minigame")
 
     @bot.tree.command(
-        name="invite",
+        name="discord",
         description="Invite link of this Discord server.",
     )
-    async def invite(interaction: discord.Interaction):
-        await interaction.response.send_message(f"-> http://dsc.gg/nafdiscord")
+    async def __discord(interaction: discord.Interaction):
+        await interaction.response.send_message(f"-> {discord_invite_link}")
