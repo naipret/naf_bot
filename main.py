@@ -8,13 +8,11 @@ from src import administrator
 
 # from src import math
 
-with open(
-    "config/config.json",
-    "r",
-) as file:
+with open("config/config.json", "r") as file:
     config = json.load(file)
     bot_token = config["bot_token"]
     permissions = config["permissions"]
+    discord_invite_link = config["discord_invite_link"]
     welcome_channel_id = config["welcome_channel_id"]
     goodbye_channel_id = config["goodbye_channel_id"]
 
@@ -40,31 +38,25 @@ async def on_ready():
     print("")
     print(f"Your bot {bot.user} is now RUNNING!")
     print(
-        f"Invite link: https://discord.com/api/oauth2/authorize?client_id={bot.user.id}&permissions={permissions}&scope=bot"
+        f"Invite link: https://discord.com/oauth2/authorize?client_id={bot.user.id}&permissions={permissions}&scope=bot%20applications.commands"
     )
     print("")
-    await bot.change_presence(activity=discord.Game(name="dsc.gg/nafdiscord"))
+    await bot.change_presence(activity=discord.Game(discord_invite_link[7:]))
 
 
 @bot.event
 async def on_member_join(member: discord.Member):
-    await member_event.on_member_join(
-        member,
-        welcome_channel_id,
-    )
+    await member_event.on_member_join(member, welcome_channel_id)
 
 
 @bot.event
 async def on_member_remove(member: discord.Member):
-    await member_event.on_member_remove(
-        member,
-        goodbye_channel_id,
-    )
+    await member_event.on_member_remove(member, goodbye_channel_id)
 
 
 administrator.setup(bot)
 # math.setup(bot)
-server.setup(bot)
+server.setup(bot, discord_invite_link)
 
 
 @bot.tree.command(
@@ -72,10 +64,7 @@ server.setup(bot)
     description="Shows this help message.",
 )
 async def help(interaction: discord.Interaction):
-    embed = discord.Embed(
-        title="List of all available commands",
-        description="Github repo: https://github.com/naipret/naf_bot",
-    )
+    embed = discord.Embed(title="List of all available commands")
     for command in bot.tree.get_commands():
         embed.add_field(
             name=f"/{command.name}",
@@ -85,7 +74,4 @@ async def help(interaction: discord.Interaction):
     await interaction.response.send_message(embed=embed)
 
 
-bot.run(
-    bot_token,
-    reconnect=True,
-)
+bot.run(bot_token, reconnect=True)
