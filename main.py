@@ -14,6 +14,7 @@ with open(
 ) as file:
     config = json.load(file)
     bot_token = config["bot_token"]
+    permissions = config["permissions"]
     welcome_channel_id = config["welcome_channel_id"]
     goodbye_channel_id = config["goodbye_channel_id"]
 
@@ -39,7 +40,7 @@ async def on_ready():
     print("")
     print(f"Your bot {bot.user} is now RUNNING!")
     print(
-        f"Invite link: https://discord.com/api/oauth2/authorize?client_id={bot.user.id}&permissions=8&scope=bot%20applications.commands"
+        f"Invite link: https://discord.com/api/oauth2/authorize?client_id={bot.user.id}&permissions={permissions}&scope=bot"
     )
     print("")
     await bot.change_presence(activity=discord.Game(name="dsc.gg/nafdiscord"))
