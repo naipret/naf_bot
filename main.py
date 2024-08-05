@@ -13,8 +13,8 @@ with open("config/config.json", "r") as file:
     bot_token = config["bot_token"]
     permissions = config["permissions"]
     discord_invite_link = config["discord_invite_link"]
-    welcome_channel_id = config["welcome_channel_id"]
-    goodbye_channel_id = config["goodbye_channel_id"]
+    join_channel_id = config["join_channel_id"]
+    leave_channel_id = config["leave_channel_id"]
 
 
 class Bot(discord.Client):
@@ -46,12 +46,12 @@ async def on_ready():
 
 @bot.event
 async def on_member_join(member: discord.Member):
-    await member_event.on_member_join(member, welcome_channel_id)
+    await member_event.on_member_join(member, join_channel_id)
 
 
 @bot.event
 async def on_member_remove(member: discord.Member):
-    await member_event.on_member_remove(member, goodbye_channel_id)
+    await member_event.on_member_remove(member, leave_channel_id)
 
 
 administrator.setup(bot)

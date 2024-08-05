@@ -4,6 +4,6 @@
 
     "discord_invite_link": "http://dsc.gg/nafdiscord",
     
-    "welcome_channel_id": 999632195247419502,
-    "goodbye_channel_id": 1268813798718967911
+    "join_channel_id": 999632195247419502,
+    "leave_channel_id": 1268813798718967911
 }
