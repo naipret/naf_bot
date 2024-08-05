@@ -2,6 +2,7 @@ import discord
 from discord import app_commands
 import json
 
+from src import member_event
 from src import server
 from src import administrator
 
@@ -46,16 +47,12 @@ async def on_ready():
 
 @bot.event
 async def on_member_join(member: discord.Member):
-    channel = bot.get_channel(welcome_channel_id)
-    if channel is not None:
-        await channel.send(f"Welcome {member.mention} to the server!")
+    await member_event.on_member_join(member, welcome_channel_id)
 
 
 @bot.event
 async def on_member_remove(member: discord.Member):
-    channel = bot.get_channel(goodbye_channel_id)
-    if channel is not None:
-        await channel.send(f"{member.mention} has left the server.")
+    await member_event.on_member_remove(member, goodbye_channel_id)
 
 
 server.setup(bot)
