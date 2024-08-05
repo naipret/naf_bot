@@ -3,17 +3,17 @@ import os
 
 
 def setup(bot):
-    def available_file(message: str) -> bool:
-        message_dir = "config/message/"
-        if not os.path.exists(message_dir):
+    def available_file(message_content: str) -> bool:
+        message_folder = "config/message/"
+        if not os.path.exists(message_folder):
             return False
-        files = os.listdir(message_dir)
+        files = os.listdir(message_folder)
         message_list = [
             os.path.splitext(file)[0]
             for file in files
-            if os.path.isfile(os.path.join(message_dir, file))
+            if os.path.isfile(os.path.join(message_folder, file))
         ]
-        return message in message_list
+        return message_content in message_list
 
     @bot.tree.command(
         name="msg",
@@ -22,20 +22,20 @@ def setup(bot):
     async def msg(
         interaction: discord.Interaction,
         user: discord.User,
-        message: str,
+        message_content: str,
     ):
-        if available_file(message):
+        if available_file(message_content):
             with open(
-                f"config/message/{message}.txt",
+                f"config/message/{message_content}.txt",
                 "r",
                 encoding="utf-8",
             ) as file:
-                message = file.read()
+                message_content = file.read()
         else:
-            message = message.replace("\\n", "\n")
+            message_content = message_content.replace("\\n", "\n")
         if interaction.user.guild_permissions.administrator:
             try:
-                await user.send(message)
+                await user.send(message_content)
                 await interaction.response.send_message(
                     f"Message sent to {user.mention}.",
                     ephemeral=True,
