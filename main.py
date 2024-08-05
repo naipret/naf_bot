@@ -47,17 +47,23 @@ async def on_ready():
 
 @bot.event
 async def on_member_join(member: discord.Member):
-    await member_event.on_member_join(member, welcome_channel_id)
+    await member_event.on_member_join(
+        member,
+        welcome_channel_id,
+    )
 
 
 @bot.event
 async def on_member_remove(member: discord.Member):
-    await member_event.on_member_remove(member, goodbye_channel_id)
+    await member_event.on_member_remove(
+        member,
+        goodbye_channel_id,
+    )
 
 
-server.setup(bot)
 administrator.setup(bot)
 # math.setup(bot)
+server.setup(bot)
 
 
 @bot.tree.command(
