@@ -24,7 +24,7 @@ def setup(bot, discord_invite_link):
             )
         elif which_server == "minigame":
             await interaction.response.send_message(
-                f"-> https://discord.com/channels/998500551488708618/1267736839976910951/1267743994486718475"
+                f"-> https://discord.com/channels/998500551488708618/1267736839976910951/1272413804709412905"
             )
         else:
             await interaction.response.send_message(
