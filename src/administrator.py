@@ -24,6 +24,14 @@ def setup(bot):
         user: discord.User,
         message_content: str,
     ):
+        # Check if the user has administrator permissions
+        if not interaction.user.guild_permissions.administrator:
+            await interaction.response.send_message(
+                "You do not have permission to use this command.",
+                ephemeral=True,
+            )
+            return
+        # Check if there are any template files available at config/message/ otherwise it will continue with raw message_content
         if available_file(message_content):
             with open(
                 f"config/message/{message_content}.txt",
@@ -33,21 +41,16 @@ def setup(bot):
                 message_content = file.read()
         else:
             message_content = message_content.replace("\\n", "\n")
-        if interaction.user.guild_permissions.administrator:
-            try:
-                await user.send(message_content)
-                await interaction.response.send_message(
-                    f"Message sent to {user.mention}.",
-                    ephemeral=True,
-                )
-            except discord.Forbidden:
-                await interaction.response.send_message(
-                    f"Could not send a message to {user.mention}. They might have DMs disabled.",
-                    ephemeral=True,
-                )
-        else:
+        # Send the message to that member
+        try:
+            await user.send(message_content)
             await interaction.response.send_message(
-                "You do not have permission to send this message to other users.",
+                f"Message sent to {user.mention}.",
+                ephemeral=True,
+            )
+        except discord.Forbidden:
+            await interaction.response.send_message(
+                f"Could not send a message to {user.mention}. They might have DMs disabled.",
                 ephemeral=True,
             )
 
@@ -56,26 +59,33 @@ def setup(bot):
         description="Send a message to all members in the server.",
     )
     async def broadcast(interaction: discord.Interaction):
+        # Check if the user has administrator permissions
         if not interaction.user.guild_permissions.administrator:
             await interaction.response.send_message(
-                "You do not have permission to use this command.", ephemeral=True
+                "You do not have permission to use this command.",
+                ephemeral=True,
             )
             return
-
-        if available_file(message_content):
+        # You may have to wait a few minutes
+        await interaction.response.send_message(
+            "The app may be unresponsive for a few minutes.",
+            ephemeral=True,
+        )
+        # Load the message content from config/message/broadcast.txt
+        try:
             with open(
-                f"config/message/broadcast.txt",
+                "config/message/broadcast.txt",
                 "r",
                 encoding="utf-8",
             ) as file:
                 message_content = file.read()
-        else:
+        except FileNotFoundError:
             await interaction.response.send_message(
-                f"Message 'broadcast.txt' not found.",
+                "'config/message/broadcast.txt' not found.",
                 ephemeral=True,
             )
             return
-
+        # Fetch the server (guild) and its members
         guild = interaction.guild
         if guild is None:
             await interaction.response.send_message(
@@ -83,7 +93,7 @@ def setup(bot):
                 ephemeral=True,
             )
             return
-
+        # Send the message to all members
         failed_members = []
         for member in guild.members:
             try:
@@ -91,7 +101,6 @@ def setup(bot):
                     await member.send(message_content)
             except discord.Forbidden:
                 failed_members.append(member.display_name)
-
         if failed_members:
             await interaction.response.send_message(
                 f"Message sent, but failed to reach: {', '.join(failed_members)}",
