@@ -50,3 +50,55 @@ def setup(bot):
                 "You do not have permission to send this message to other users.",
                 ephemeral=True,
             )
+
+    @bot.tree.command(
+        name="broadcast",
+        description="Send a message to all members in the server.",
+    )
+    async def broadcast(interaction: discord.Interaction):
+        if not interaction.user.guild_permissions.administrator:
+            await interaction.response.send_message(
+                "You do not have permission to use this command.", ephemeral=True
+            )
+            return
+
+        if available_file(message_content):
+            with open(
+                f"config/message/broadcast.txt",
+                "r",
+                encoding="utf-8",
+            ) as file:
+                message_content = file.read()
+        else:
+            await interaction.response.send_message(
+                f"Message 'broadcast.txt' not found.",
+                ephemeral=True,
+            )
+            return
+
+        guild = interaction.guild
+        if guild is None:
+            await interaction.response.send_message(
+                "This command can only be used in a server.",
+                ephemeral=True,
+            )
+            return
+
+        failed_members = []
+        for member in guild.members:
+            try:
+                if not member.bot:
+                    await member.send(message_content)
+            except discord.Forbidden:
+                failed_members.append(member.display_name)
+
+        if failed_members:
+            await interaction.response.send_message(
+                f"Message sent, but failed to reach: {', '.join(failed_members)}",
+                ephemeral=True,
+            )
+        else:
+            await interaction.response.send_message(
+                "Message sent to all members successfully!",
+                ephemeral=True,
+            )
