@@ -8,8 +8,8 @@ def setup(bot):
     )
     async def add(
         interaction: discord.Interaction,
-        num1: int,
-        num2: int,
+        num1: float,
+        num2: float,
     ):
         await interaction.response.send_message(f"{num1} + {num2} = {num1 + num2}")
 
@@ -19,8 +19,8 @@ def setup(bot):
     )
     async def subtract(
         interaction: discord.Interaction,
-        num1: int,
-        num2: int,
+        num1: float,
+        num2: float,
     ):
         await interaction.response.send_message(f"{num1} - {num2} = {num1 - num2}")
 
@@ -30,8 +30,8 @@ def setup(bot):
     )
     async def multiply(
         interaction: discord.Interaction,
-        num1: int,
-        num2: int,
+        num1: float,
+        num2: float,
     ):
         await interaction.response.send_message(f"{num1} * {num2} = {num1 * num2}")
 
@@ -41,8 +41,8 @@ def setup(bot):
     )
     async def divide(
         interaction: discord.Interaction,
-        num1: int,
-        num2: int,
+        num1: float,
+        num2: float,
     ):
         if num2 == 0:
             await interaction.response.send_message("Cannot divide by zero.")
@@ -55,8 +55,8 @@ def setup(bot):
     )
     async def power(
         interaction: discord.Interaction,
-        base: int,
-        exponent: int,
+        base: float,
+        exponent: float,
     ):
         await interaction.response.send_message(
             f"{base} ^ {exponent} = {base ** exponent}"
