@@ -8,7 +8,7 @@ async def on_member_join(
     channel = member.guild.get_channel(join_channel_id)
     if channel is not None:
         await channel.send(
-            f"{member.mention} | `{member.name}` | `{member.id}` has join the server!"
+            f"{member.mention} | `{member.name}` | `{member.id}` has joined the server!"
         )
     else:
         print(f"Could not find the join channel with ID:", join_channel_id)
