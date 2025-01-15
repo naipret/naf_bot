@@ -15,6 +15,7 @@ with open("config/config.json", "r") as file:
     discord_invite_link = config["discord_invite_link"]
     join_channel_id = config["join_channel_id"]
     leave_channel_id = config["leave_channel_id"]
+    boost_channel_id = config["boost_channel_id"]
 
 
 class Bot(discord.Client):
@@ -52,6 +53,11 @@ async def on_member_join(member: discord.Member):
 @bot.event
 async def on_member_remove(member: discord.Member):
     await member_event.on_member_remove(member, leave_channel_id)
+
+
+@bot.event
+async def on_guild_update(before: discord.Member, after: discord.Member):
+    await member_event.on_member_update(before, after, boost_channel_id)
 
 
 administrator.setup(bot)
